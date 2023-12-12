@@ -16,3 +16,10 @@ Make sure your kubectl is configured to your minikube cluster and run:
 ```
 kubectl apply -k .
 ```
+
+To test you can use local port binding via:
+```
+kubectl port-forward svc/sample-app-service -n sample-app-namespace 8080:80
+```
+
+Now hit http://localhost:8080 in your browser.
