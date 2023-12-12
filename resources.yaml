@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-app-deployment
+spec:
+  # replicas: 3
+  selector:
+    matchLabels:
+      app: sample-app-pod-label
+  template:
+    metadata:
+      labels:
+        app: sample-app-pod-label
+    spec:
+      containers:
+        - name: sample-app-container
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/usr/sbin/nginx", "-s", "quit"]
+          volumeMounts:
+            - name: nginx-webpage-volume
+              mountPath: /usr/share/nginx/html
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+      volumes:
+      - name: nginx-webpage-volume
+        configMap:
+          name: sample-app-nginx-config
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
