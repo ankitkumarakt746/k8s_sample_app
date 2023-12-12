@@ -21,21 +21,7 @@ spec:
             preStop:
               exec:
                 command: ["/usr/sbin/nginx", "-s", "quit"]
-          # livenessProbe:
-          #   httpGet:
-          #     path: /healthz
-          #     port: 80
-          #   initialDelaySeconds: 3
-          #   periodSeconds: 3
-          # readinessProbe:
-          #   httpGet:
-          #     path: /healthz
-          #     port: 80
-          #   initialDelaySeconds: 5
-          #   periodSeconds: 5
           volumeMounts:
-            # - name: app-data
-            #   # mountPath: /usr/share/nginx/html
             - name: nginx-webpage-volume
               mountPath: /usr/share/nginx/html
           resources:
@@ -46,8 +32,6 @@ spec:
               memory: "128Mi"
               cpu: "500m"
       volumes:
-      # - name: app-data
-      #   emptyDir: {}
       - name: nginx-webpage-volume
         configMap:
           name: sample-app-nginx-config
